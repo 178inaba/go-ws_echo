@@ -11,6 +11,8 @@ const (
 	port = 8080
 )
 
+var connList = []*websocket.Conn{}
+
 func main() {
 	run()
 }
@@ -30,20 +32,30 @@ func run() {
 }
 
 func handler(conn *websocket.Conn) {
+	hErr := websocket.Message.Send(conn, "hello world!")
+	if hErr != nil {
+		fmt.Println(hErr)
+		return
+	}
+
+	connList = append(connList, conn)
+LOOP:
 	for {
 		var message string
 		fmt.Println("wait receve")
 		rErr := websocket.Message.Receive(conn, &message)
 		if rErr != nil {
 			fmt.Println(rErr)
-			break
+			break LOOP
 		}
 
 		fmt.Println("message:", message)
-		sErr := websocket.Message.Send(conn, message)
-		if sErr != nil {
-			fmt.Println(sErr)
-			break
+		for _, c := range connList {
+			sErr := websocket.Message.Send(c, message)
+			if sErr != nil {
+				fmt.Println(sErr)
+				break LOOP
+			}
 		}
 	}
 }
