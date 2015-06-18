@@ -1,0 +1,42 @@
+var webSocket ;
+var uri = "ws://127.0.0.1:8080/ws";
+webSocket = new WebSocket(uri);
+// イベントハンドラの設定
+webSocket.onopen = onOpen;
+webSocket.onmessage = onMessage;
+webSocket.onclose = onClose;
+webSocket.onerror = onError;
+
+// 接続イベント
+function onOpen(event) {
+    console.log("onOpen");
+    console.log(event);
+}
+
+// メッセージ受信イベント
+function onMessage(event) {
+    console.log("onMessage");
+    if(event && event.data ){
+		console.log(event);
+		document.getElementById("res").innerHTML = event.data;
+    }
+}
+
+// エラーイベント
+function onError(event) {
+    console.log("onError");
+    console.log(event);
+}
+
+// 切断イベント
+function onClose(event) {
+    console.log("onClose");
+    console.log(event);
+}
+
+function writeMessage() {
+    var val = document.getElementById("message").value;
+    console.log(val);
+    webSocket.send(val);
+    return false;
+}
