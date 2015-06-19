@@ -34,7 +34,7 @@ func run() {
 func handler(conn *websocket.Conn) {
 	hErr := websocket.Message.Send(conn, "hello world!")
 	if hErr != nil {
-		fmt.Println(hErr)
+		fmt.Println("hello Error: ", hErr)
 		return
 	}
 
@@ -45,7 +45,7 @@ LOOP:
 		fmt.Println("wait receve")
 		rErr := websocket.Message.Receive(conn, &message)
 		if rErr != nil {
-			fmt.Println(rErr)
+			fmt.Println("receive error: ", rErr)
 			break LOOP
 		}
 
@@ -53,8 +53,8 @@ LOOP:
 		for _, c := range connList {
 			sErr := websocket.Message.Send(c, message)
 			if sErr != nil {
-				fmt.Println(sErr)
-				break LOOP
+				fmt.Println("send error: ", sErr)
+				// break LOOP
 			}
 		}
 	}
