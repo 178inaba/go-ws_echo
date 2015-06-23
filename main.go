@@ -44,14 +44,13 @@ func handler(conn *websocket.Conn) {
 	}
 
 	connList = append(connList, conn)
-LOOP:
 	for {
 		var message string
 		fmt.Println("wait receve")
 		rErr := websocket.Message.Receive(conn, &message)
 		if rErr != nil {
 			fmt.Println("receive error: ", rErr)
-			break LOOP
+			break
 		}
 
 		fmt.Println("message:", message)
