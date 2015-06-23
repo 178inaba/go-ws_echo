@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"golang.org/x/net/websocket"
 	"net/http"
+
+	"golang.org/x/net/websocket"
 )
 
 const (
@@ -54,8 +55,9 @@ LOOP:
 			sErr := websocket.Message.Send(c, message)
 			if sErr != nil {
 				fmt.Println("send error: ", sErr)
-				// break LOOP
 			}
 		}
 	}
+
+	fmt.Println("end: ", conn)
 }
