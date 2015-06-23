@@ -8,8 +8,9 @@ import (
 )
 
 const (
-	path = "/"
-	port = 8080
+	indexPath = "/"
+	wsPath    = "/ws"
+	port      = 8080
 )
 
 var connList = []*websocket.Conn{}
@@ -19,8 +20,11 @@ func main() {
 }
 
 func run() {
-	fmt.Println("websocket run")
-	http.HandleFunc(path,
+	fmt.Println("run()")
+
+	http.Handle(indexPath, http.FileServer(http.Dir("client")))
+
+	http.HandleFunc(wsPath,
 		func(w http.ResponseWriter, req *http.Request) {
 			s := websocket.Server{Handler: websocket.Handler(handler)}
 			s.ServeHTTP(w, req)
